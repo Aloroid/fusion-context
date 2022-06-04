@@ -1,0 +1,9 @@
+[package]
+name = "aloroid/fusioncontext"
+description = "A implementation of Contexts from React/Roact in Fusion using coroutines"
+version = "0.1.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+
+[dependencies]
+Fusion = "elttob/fusion@0.1.1-beta"

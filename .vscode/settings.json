@@ -1,0 +1,10 @@
+{
+	
+	"files.exclude": {
+		"Packages": true,
+		".gitattributes": true,
+		"default.project.json": true,
+		"wally.lock": true
+	}
+	
+}
