@@ -6,7 +6,8 @@
 		"default.project.json": true,
 		"wally.lock": true,
 		"build": true,
-		"package": true
+		"package": true,
+		"LICENSE": true
 	}
 	
 }
