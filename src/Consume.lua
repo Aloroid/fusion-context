@@ -8,35 +8,47 @@ local sharedState = require(script.Parent.sharedState)
 local PubTypes = require(script.Parent.PubTypes)
 
 local providers = sharedState.providers
+local checkpoints = sharedState.checkpoints
 
 local function consume(key: PubTypes.Key)
 	
-	if providers[coroutine.running()] == nil or providers[coroutine.running()][key] == nil then return end
+	local threadToCheck = coroutine.running()
+	local stack = nil
+	local levelToCheck = 2
 	
-	local lookInto = providers[coroutine.running()][key]
-	--print(lookInto)
-	
-	for levelToCheck = 1, math.huge do
+	while true do
 		
-		local s, f, l = debug.info(levelToCheck, "sfl")
+		local f
+		local lookInto = providers[threadToCheck] or {}
+		lookInto = lookInto[key] or {}
 		
-		--print(levelToCheck)
-		if s == nil then break end
-		if s == "[C]" or lookInto[s] == nil or lookInto[s][f] == nil then continue end
-		
-		local nearestLine, value = 0, nil
-		for lineProvider, providerValue in pairs(lookInto[s][f]) do
-			if lineProvider <= l and lineProvider > nearestLine then
-				nearestLine,value = lineProvider, providerValue
-				
-			end
-			
+		-- used by Checkpoints
+		if stack == nil then
+			f = debug.info(threadToCheck, levelToCheck, "f")
+		else
+			f = stack[levelToCheck]
 		end
 		
-		return value
+		if f == nil then break end
 		
+		if lookInto[f] then
+			return lookInto[f]
+		end
+		
+		-- Activates the checkpoint
+		if checkpoints[f] then
+			levelToCheck = 1
+			threadToCheck = checkpoints[f]._thread
+			stack = checkpoints[f]._stack
+			lookInto = providers[threadToCheck][key]
+			
+			continue
+		end
+		
+		levelToCheck += 1
 	end
 
 end
 
+print(consume)
 return consume

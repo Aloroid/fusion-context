@@ -41,6 +41,7 @@ export type Context = PubTypes.Context
 return {
 	Consume = require(script.Consume),
 	Provide = require(script.Provide),
+	Checkpoint = require(script.Checkpoint),
 	
 	version = {
 		major = 0,

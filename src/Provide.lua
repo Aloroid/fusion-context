@@ -14,20 +14,13 @@ local function provide(key: Key, value: any)
 	
 	
 	-- Gets the values needed to identify the Provider
-	local s,f,l = debug.info(2, "sfl")
+	local f = debug.info(2, "f")
 	local providersInThread = providers[coroutine.running()] or {}
 	providers[coroutine.running()] = providersInThread
 	
-	local providersWithKey = providersInThread[key] or {}
-	providersInThread[key] = providersWithKey
+	providersInThread[key] = providersInThread[key] or {}
 	
-	local providersInScript = providersWithKey[s] or {}
-	providersWithKey[s] = providersInScript
-	
-	local providersInFunction = providersInScript[f] or {}
-	providersInScript[f] = providersInFunction
-	
-	providersInFunction[l] = value
+	providersInThread[key][f] = value
 	
 	--print("Provider made:", coroutine.running(), key, s, f, l)
 	
