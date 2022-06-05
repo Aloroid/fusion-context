@@ -4,7 +4,9 @@
 		"Packages": true,
 		".gitattributes": true,
 		"default.project.json": true,
-		"wally.lock": true
+		"wally.lock": true,
+		"build": true,
+		"package": true
 	}
 	
 }

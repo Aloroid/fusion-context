@@ -1,0 +1,27 @@
+{
+	"name": "Fusion-Context",
+	"tree": {
+		"$className": "DataModel",
+		
+		"ServerScriptService": {
+			"$className": "ServerScriptService",
+			
+			"ServerTests": {
+				"$path": "tests"
+			}
+		},
+		
+		"ReplicatedStorage": {
+			"$className": "ReplicatedStorage",
+			
+			"Packages": {
+				"$path": "Packages",
+				
+				"FusionContext": {
+					"$path": "src"
+				}
+			}
+			
+		}
+	}
+}
