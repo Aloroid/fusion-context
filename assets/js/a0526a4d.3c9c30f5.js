@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[23],{97868:function(s){s.exports=JSON.parse('{"sourceUrl":"https://github.com/Aloroid/fusion-context/blob/main","baseUrl":"/fusion-context/","classOrder":["FusionContext"],"apiCategories":[]}')}}]);
