@@ -15,7 +15,7 @@ local function provide(context: Key, value: any)
 	end
 	
 	-- Gets the values needed to identify the Provider
-	local s,n = debug.info(2, "sn")
+	local s,n,l = debug.info(2, "snl")
 	local provider = sharedState.provide[context]
 
 	-- Checks if there isnt a provider table for the context
@@ -29,7 +29,12 @@ local function provide(context: Key, value: any)
 		provider[s] = {}
 	end
 	
-	provider[s][n] = value
+	if provider[s][n] == nil then
+		provider[s][n] = {}
+		
+	end
+	
+	provider[s][n][l] = value
 
 end
 

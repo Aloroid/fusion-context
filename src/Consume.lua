@@ -31,23 +31,31 @@ local function consume(key: PubTypes.Key)
 	while ok == false do
 
 		-- Get the debug info as it will be used to identify the Context
-		local s, n = debug.info(level, "sn")
+		local s, n, lineCall = debug.info(level, "snl")
 		
 		-- Make sure we aren't running into dead ends or places
 		-- where there is no provider
 		if s == nil then break end
-		if s == "[C]" then level += 1 continue end
-		if provide[s] == nil then level += 1 continue end
+		if s == "[C]" or provide[s] == nil or provide[s][n] == nil then level += 1 continue end
 		
 		-- Get the value of the Provider
-		local providerValue = provide[s][n]
+		local providerValues = provide[s][n]
+		
+		-- Find out if we can use this by making sure the line we are called on is before the provider
+		local nearest, providerValue = 0, nil
+		for lineProvider, v in pairs(providerValues) do
+			if lineCall >= lineProvider and lineProvider > nearest then
+				nearest, providerValue = lineProvider, v
+				
+			end
+		end
 		
 		if providerValue then
 			ok = true
 			value = providerValue
 			
 		end
-
+		
 		level += 1
 
 	end
