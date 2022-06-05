@@ -1,16 +1,18 @@
 ---@diagnostic disable: undefined-global
 
-
+local Fusion = require(Packages.Fusion)
+local FusionContext = require(Packages.FusionContext)
+local ThemeContext = require(script.Parent.ThemeContext)
 
 local New = Fusion.New
 local Computed = Fusion.Computed
 local Value = Fusion.Value
 local OnEvent = Fusion.OnEvent
-local ThemeContext = ThemeContext
+local Consume = FusionContext.Consume
 
 local function ThemedButton(props)
 	
-	local theme = ThemeContext:consume()
+	local theme = Consume(ThemeContext)
 	local isPressed = Value(false)
 	
 	return New "TextButton" {
@@ -24,6 +26,7 @@ local function ThemedButton(props)
 			
 		end),
 		TextColor3 = theme.text,
+		Text = props.Text,
 		
 		[OnEvent "MouseButton1Down"] = function()
 			isPressed:set(true)
