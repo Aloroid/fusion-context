@@ -1,3 +1,4 @@
 # fusion-context
 A implementation of Contexts from React/Roact that you can use inside Fusion (or pretty much anything else, really.)
-Contexts are powerful and can be used to pass properties through objects.
+
+For API documentation, go [here](https://aloroid.github.io/fusion-context/api/FusionContext)
