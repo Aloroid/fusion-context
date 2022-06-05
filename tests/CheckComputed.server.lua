@@ -17,7 +17,7 @@ local Context = FusionContext.Context
 local Consume = FusionContext.Consume
 local Provide = FusionContext.Provide
 
-local ThemeContext = Context("Theme", {	
+local ThemeContext = Provide("Theme", {	
 	background = Color3.fromRGB(26, 26, 26),
 	backgroundPressed = Color3.fromRGB(46, 46, 46),
 	
@@ -27,7 +27,7 @@ local ThemeContext = Context("Theme", {
 
 local function App()
 	
-	Provide(ThemeContext, {
+	Provide("Theme", {
 		background = Color3.fromRGB(242, 242, 242),
 		backgroundPressed = Color3.fromRGB(210, 210, 210),
 		text = Color3.fromRGB(26, 26, 26)

@@ -8,34 +8,29 @@ local PubTypes = require(script.Parent.PubTypes)
 
 type Key = PubTypes.Key
 
-local function provide(context: Key, value: any)
+local providers = sharedState.providers
+
+local function provide(key: Key, value: any)
 	
-	if type(context) == "table" then
-		context = context.key
-	end
 	
 	-- Gets the values needed to identify the Provider
-	local s,n,l = debug.info(2, "snl")
-	local provider = sharedState.provide[context]
-
-	-- Checks if there isnt a provider table for the context
-	if provider == nil then
-		provider = {}
-		sharedState.provide[context] = provider
-		
-	end
+	local s,f,l = debug.info(2, "sfl")
+	local providersInThread = providers[coroutine.running()] or {}
+	providers[coroutine.running()] = providersInThread
 	
-	if provider[s] == nil then
-		provider[s] = {}
-	end
+	local providersWithKey = providersInThread[key] or {}
+	providersInThread[key] = providersWithKey
 	
-	if provider[s][n] == nil then
-		provider[s][n] = {}
-		
-	end
+	local providersInScript = providersWithKey[s] or {}
+	providersWithKey[s] = providersInScript
 	
-	provider[s][n][l] = value
-
+	local providersInFunction = providersInScript[f] or {}
+	providersInScript[f] = providersInFunction
+	
+	providersInFunction[l] = value
+	
+	--print("Provider made:", coroutine.running(), key, s, f, l)
+	
 end
 
 return provide

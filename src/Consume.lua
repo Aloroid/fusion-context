@@ -7,61 +7,35 @@
 local sharedState = require(script.Parent.sharedState)
 local PubTypes = require(script.Parent.PubTypes)
 
+local providers = sharedState.providers
+
 local function consume(key: PubTypes.Key)
 	
-	-- Get the string key
-	if type(key) == "table" then
-		key = key.key
-	end
+	if providers[coroutine.running()] == nil or providers[coroutine.running()][key] == nil then return end
 	
-	assert(sharedState.context[key], "Context doesn't exist")
+	local lookInto = providers[coroutine.running()][key]
+	--print(lookInto)
 	
-	-- Return the default value if there is no provider with that key
-	if sharedState.provide[key] == nil then
-		return sharedState.context[key].value
-
-	end
-
-	-- Iterate through the stack and find out if there is a provider/checkpoint
-	-- If we have found a Provider, get the value from it
-	-- If we have not found a Provider, return the default value.
-	local ok, level, value = false, 2, sharedState.context[key].value
-	local provide = sharedState.provide[key]
-	
-	while ok == false do
-
-		-- Get the debug info as it will be used to identify the Context
-		local s, n, lineCall = debug.info(level, "snl")
+	for levelToCheck = 1, math.huge do
 		
-		-- Make sure we aren't running into dead ends or places
-		-- where there is no provider
+		local s, f, l = debug.info(levelToCheck, "sfl")
+		
+		--print(levelToCheck)
 		if s == nil then break end
-		if s == "[C]" or provide[s] == nil or provide[s][n] == nil then level += 1 continue end
+		if s == "[C]" or lookInto[s] == nil or lookInto[s][f] == nil then continue end
 		
-		-- Get the value of the Provider
-		local providerValues = provide[s][n]
-		
-		-- Find out if we can use this by making sure the line we are called on is before the provider
-		local nearest, providerValue = 0, nil
-		for lineProvider, v in pairs(providerValues) do
-			if lineCall >= lineProvider and lineProvider > nearest then
-				nearest, providerValue = lineProvider, v
+		local nearestLine, value = 0, nil
+		for lineProvider, providerValue in pairs(lookInto[s][f]) do
+			if lineProvider <= l and lineProvider > nearestLine then
+				nearestLine,value = lineProvider, providerValue
 				
 			end
-		end
-		
-		if providerValue then
-			ok = true
-			value = providerValue
 			
 		end
 		
-		level += 1
-
+		return value
+		
 	end
-	
-	--print("consumed", level-3,"levels")
-	return value
 
 end
 

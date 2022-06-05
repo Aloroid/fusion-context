@@ -33,7 +33,7 @@ return {
 		-- will pass the function a random number, but you can make it pass
 		-- arrays, Vector3s, or anything else you want to test your function on.
 		
-		return Context("Theme", "Light")
+		
 	end;
 
 	Functions = {

@@ -13,17 +13,16 @@ local Consume = FusionContext.Consume
 local Provide = FusionContext.Provide
 local Context = FusionContext.Context
 
+Provide("Color", {value = "Dark"})
+
 -- We create a Context object here as we need the value to use Provide/Consume
 -- The first argument is the special key for the context, while the second argument
 -- is the default value that will be given to consumers if it can't find a Provider
-local ThemeContext = Context("Color", {
-    value = "Dark"
-})
 
 local function a()
     -- Looks up the call stack to find out the Provider we need  to use
     local startTime = os.clock()
-    local theme = Consume(ThemeContext)    
+    local theme = Consume("Color")    
     local endTime = os.clock()
     
     
@@ -36,7 +35,7 @@ local function b()
     -- value "Light" instead of the value "Dark" which is the default
 	a() -- Should print "Dark"
 	
-    Provide(ThemeContext, {
+    Provide("Color", {
       value = "Light"
     })
 

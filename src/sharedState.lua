@@ -1,6 +1,5 @@
 local sharedState = {}
 
-sharedState.context = {}
-sharedState.provide = {}
+sharedState.providers = {}
 
 return sharedState

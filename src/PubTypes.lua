@@ -14,10 +14,10 @@ export type Context = {
 
 --[=[
 	@within FusionContext
-	@type Key string | Context
+	@type Key any
 	The key used to filter which context to get
 	
 ]=]
-export type Key = string | Context
+export type Key = any
 
 return {}
